@@ -45,7 +45,7 @@ export async function createEditCabin(newCabin, id) {
     .upload(imageName, newCabin.image);
 
   //3) Delete Cabin if uploading the image is failed
-  if (errorImage && !isEditSession) {
+  if (errorImage) {
     await supabase.from("cabins").delete().eq("id", data[0].id);
     throw new Error("Uploading the image is failed, Can't create the cabin");
   }
