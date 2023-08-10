@@ -96,10 +96,9 @@ function CreateEditCabinForm({ cabin = {} }) {
           defaultValue={0}
           {...register("discount", {
             required: "This field is required",
-            validate: (value) => {
-              value <= getValues().regularPrice ||
-                "The discount can't be higher than price";
-            },
+            validate: (value) =>
+              +value <= +getValues().regularPrice ||
+              "The discount can't be higher than price",
           })}
           disabled={isWorking}
         />

@@ -10,7 +10,7 @@ export async function createEditCabin(newCabin, id) {
   const isEditSession = Boolean(id);
 
   const isNewImage = typeof newCabin.image !== "string";
-
+  console.log(isNewImage, newCabin.image);
   const imageName = `${Math.random()}-${newCabin.image?.name}`.replaceAll(
     "/",
     ""
@@ -21,7 +21,9 @@ export async function createEditCabin(newCabin, id) {
   let query = supabase.from("cabins");
   //1) Create Cabin
   if (!isEditSession)
-    query = query.insert([{ ...newCabin, image: imagePath }]).select();
+    query = query
+      .insert([{ ...newCabin, image: isNewImage ? imagePath : newCabin.image }])
+      .select();
 
   //Edit Cabin
   if (isEditSession)

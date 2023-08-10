@@ -10,7 +10,7 @@ export function useEditButton() {
       toast.success("Cabin is successfully edited");
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: () => toast.error("Can't edit cabin at this time"),
+    onError: (err) => toast.error(err),
   });
 
   return { editCabin, isEditing };
