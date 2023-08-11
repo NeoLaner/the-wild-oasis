@@ -6,7 +6,7 @@ export async function getCabins() {
   return cabins;
 }
 
-export async function createEditCabin(newCabin, id) {
+export async function createUpdateCabin(newCabin, id) {
   const isEditSession = Boolean(id);
 
   const isNewImage = typeof newCabin.image !== "string";

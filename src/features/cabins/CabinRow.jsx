@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CreateEditCabinForm from "./CreateCabinForm";
+import CreateEditCabinForm from "./CreateUpdateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 

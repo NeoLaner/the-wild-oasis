@@ -1,20 +1,18 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createEditCabin } from "../../services/apiCabins";
+
 import FormRow from "../../ui/FormRow";
 import { useCreateCabin } from "./useCreateCabin";
-import { useEditButton } from "./useEditCabin";
+import { useUpdateCabin } from "./useUpdateCabin";
 
-function CreateEditCabinForm({ cabin = {} }) {
+function CreateUpdateCabinForm({ cabin = {} }) {
   const { createCabin, isCreating } = useCreateCabin();
-  const { editCabin, isEditing } = useEditButton();
+  const { updateCabin, isEditing } = useUpdateCabin();
 
   const { id: editId, ...editValues } = cabin;
   const isEditSession = Boolean(editId);
@@ -33,7 +31,7 @@ function CreateEditCabinForm({ cabin = {} }) {
       );
 
     if (isEditSession)
-      editCabin(
+      updateCabin(
         {
           newCabinData: {
             ...data,
@@ -142,4 +140,4 @@ function CreateEditCabinForm({ cabin = {} }) {
   );
 }
 
-export default CreateEditCabinForm;
+export default CreateUpdateCabinForm;
