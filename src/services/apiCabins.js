@@ -10,7 +10,7 @@ export async function createUpdateCabin(newCabin, id) {
   const isEditSession = Boolean(id);
 
   const isNewImage = typeof newCabin.image !== "string";
-  console.log(isNewImage, newCabin.image);
+
   const imageName = `${Math.random()}-${newCabin.image?.name}`.replaceAll(
     "/",
     ""

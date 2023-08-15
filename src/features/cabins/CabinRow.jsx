@@ -9,6 +9,7 @@ import { useCreateCabin } from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import CreateUpdateCabinForm from "./CreateUpdateCabinForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Table from "../../ui/Table";
 
 const TableRow = styled.div`
   display: grid;
@@ -69,7 +70,7 @@ function CabinRow({ cabin }) {
 
   return (
     <>
-      <TableRow role="row">
+      <Table.Row role="row">
         <Img src={image} />
         <Cabin>{name}</Cabin>
         <div>fits up to {maxCapacity} guests</div>
@@ -79,6 +80,7 @@ function CabinRow({ cabin }) {
         ) : (
           <span>&mdash;</span>
         )}
+
         <div>
           <button onClick={handleDuplicate} disabled={isCreating}>
             <HiSquare2Stack />
@@ -109,7 +111,7 @@ function CabinRow({ cabin }) {
             </Modal.Window>
           </Modal>
         </div>
-      </TableRow>
+      </Table.Row>
       {showForm && <CreateEditCabinForm cabin={cabin} />}
     </>
   );

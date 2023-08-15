@@ -15,24 +15,6 @@ function AddCabin() {
       </Modal.Window>
     </Modal>
   );
-
-  // const [showForm, setShowForm] = useState(false);
-
-  // return (
-  //   <div>
-  //     <Button onClick={() => setShowForm((showForm) => !showForm)}>
-  //       Add New Cabin
-  //     </Button>
-  //     {showForm && (
-  //       <Modal onClose={() => setShowForm(false)}>
-  //         <CreateUpdateCabinForm
-  //           type="modal"
-  //           onClose={() => setShowForm(false)}
-  //         />
-  //       </Modal>
-  //     )}
-  //   </div>
-  // );
 }
 
 export default AddCabin;
