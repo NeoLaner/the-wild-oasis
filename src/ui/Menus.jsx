@@ -85,7 +85,7 @@ function Toggle({ id }) {
 
   function handleClick(e) {
     const rect = e.target.closest("button").getBoundingClientRect();
-    console.log(rect);
+
     setPosition({
       x: window.innerWidth - rect.x - rect.width / 2,
       y: rect.y + rect.height + topMargin,
@@ -112,9 +112,9 @@ function List({ children, id }) {
   );
 }
 
-function Button({ icon, children }) {
+function Button({ icon, children, onClick, disabled }) {
   return (
-    <StyledButton>
+    <StyledButton onClick={onClick} disabled={disabled}>
       {icon}
       <span>{children}</span>
     </StyledButton>
