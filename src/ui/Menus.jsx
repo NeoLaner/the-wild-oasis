@@ -1,7 +1,16 @@
-import { createContext, useContext, useState } from "react";
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useFloating,
+} from "@floating-ui/react-dom";
+import { createContext, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
+import { useOutsideClick } from "../hooks/useOutsideClick";
+import { useMergeRefs } from "@floating-ui/react";
 
 const StyledMenu = styled.div`
   display: flex;
@@ -34,10 +43,9 @@ const StyledList = styled.ul`
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
-
-  right: ${(props) => props.position.x}px;
-  top: ${(props) => props.position.y}px;
 `;
+/* right: ${(props) => props.position.x}px;
+  top: ${(props) => props.position.y}px; */
 
 const StyledButton = styled.button`
   width: 100%;
@@ -53,7 +61,7 @@ const StyledButton = styled.button`
   gap: 1.6rem;
 
   &:hover {
-    background-color: var(--color-grey-50);
+    background-color: var(--color-grey-100);
   }
 
   & svg {
@@ -67,54 +75,74 @@ const StyledButton = styled.button`
 const MenusContext = createContext();
 
 function Menus({ children }) {
+  const [anchor, setAnchor] = useState(null);
   const [id, setId] = useState("");
-  const [position, setPosition] = useState({});
+
   const close = () => setId("");
+
   const open = setId;
 
   return (
-    <MenusContext.Provider value={{ id, close, open, position, setPosition }}>
+    <MenusContext.Provider value={{ id, close, open, anchor, setAnchor }}>
       {children}
     </MenusContext.Provider>
   );
 }
 
 function Toggle({ id }) {
-  const { open: openList, setPosition } = useContext(MenusContext);
-  const topMargin = 8;
+  const { open: openList, setAnchor, id: curId } = useContext(MenusContext);
 
-  function handleClick(e) {
-    const rect = e.target.closest("button").getBoundingClientRect();
-
-    setPosition({
-      x: window.innerWidth - rect.x - rect.width / 2,
-      y: rect.y + rect.height + topMargin,
-    });
-
-    openList(id);
-  }
-
-  return (
-    <StyledToggle onClick={handleClick}>
-      <HiEllipsisVertical />
-    </StyledToggle>
-  );
+  if (id === curId)
+    return (
+      <StyledToggle ref={setAnchor} onClick={() => openList(id)}>
+        <HiEllipsisVertical />
+      </StyledToggle>
+    );
+  else
+    return (
+      <StyledToggle onClick={() => openList(id)}>
+        <HiEllipsisVertical />
+      </StyledToggle>
+    );
 }
 
 function List({ children, id }) {
-  const { id: curId, position } = useContext(MenusContext);
+  const { id: curId, anchor, close } = useContext(MenusContext);
+  const ref = useOutsideClick(close);
 
+  const offsetOptions = {
+    mainAxis: 5,
+    crossAxis: 0,
+    alignmentAxis: 0,
+  }; // can be just a number
+
+  const { refs, floatingStyles } = useFloating({
+    elements: { reference: anchor },
+    whileElementsMounted: autoUpdate,
+    placement: "bottom-start",
+    middleware: [offset(offsetOptions), flip(), shift()], // flip makes that go around when no space exist
+  });
+  const refMerged = useMergeRefs([refs.setFloating, ref]);
   if (id !== curId) return;
-  console.log(position);
+
   return createPortal(
-    <StyledList position={position}>{children}</StyledList>,
+    <StyledList ref={refMerged} style={floatingStyles}>
+      {children}
+    </StyledList>,
     document.body
   );
 }
 
 function Button({ icon, children, onClick, disabled }) {
+  const { close } = useContext(MenusContext);
+
+  function handleClick() {
+    onClick();
+    close();
+  }
+
   return (
-    <StyledButton onClick={onClick} disabled={disabled}>
+    <StyledButton onClick={handleClick} disabled={disabled}>
       {icon}
       <span>{children}</span>
     </StyledButton>
