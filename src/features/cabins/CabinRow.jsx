@@ -1,23 +1,14 @@
-import { useDeleteCabin } from "./useDeleteCabin";
-import {
-  HiEllipsisHorizontal,
-  HiEllipsisVertical,
-  HiPencil,
-  HiSquare2Stack,
-  HiTrash,
-} from "react-icons/hi2";
-
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
+import { useState } from "react";
+
+import { useDeleteCabin } from "./useDeleteCabin";
 import { formatCurrency } from "../../utils/helpers";
 import { useCreateCabin } from "./useCreateCabin";
-import Modal from "../../ui/Modal";
 import CreateUpdateCabinForm from "./CreateUpdateCabinForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-
-import { Menu, MenuComponent, MenuItem } from "../../ui/DropdownMenu";
-import { useFloating } from "@floating-ui/react-dom";
-import { useState } from "react";
+import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 
 const Img = styled.img`
@@ -71,7 +62,7 @@ function CabinRow({ cabin }) {
   const [anchor, setAnchor] = useState(null);
 
   return (
-    <Table.Row role="row">
+    <Table.Row>
       <Img src={image} />
       <Cabin>{name}</Cabin>
       <div>fits up to {maxCapacity} guests</div>
@@ -88,12 +79,8 @@ function CabinRow({ cabin }) {
             <Menus.Toggle id={cabin.id} />
 
             <Menus.List id={cabin.id}>
-              <Menus.Button
-                onClick={handleDuplicate}
-                disabled={isCreating}
-                icon={<HiSquare2Stack />}
-              >
-                duplicate
+              <Menus.Button onClick={handleDuplicate} icon={<HiSquare2Stack />}>
+                Duplicate
               </Menus.Button>
 
               <Modal.Open open="edit-form">

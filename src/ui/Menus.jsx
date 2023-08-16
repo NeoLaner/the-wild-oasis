@@ -5,12 +5,11 @@ import {
   shift,
   useFloating,
 } from "@floating-ui/react-dom";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
-import { useMergeRefs } from "@floating-ui/react";
 
 const StyledMenu = styled.div`
   display: flex;
@@ -76,39 +75,44 @@ const MenusContext = createContext();
 
 function Menus({ children }) {
   const [anchor, setAnchor] = useState(null);
-  const [id, setId] = useState("");
+  const [openId, setOpenId] = useState("");
 
-  const close = () => setId("");
+  const close = () => setOpenId("");
 
-  const open = setId;
+  const open = setOpenId;
 
   return (
-    <MenusContext.Provider value={{ id, close, open, anchor, setAnchor }}>
+    <MenusContext.Provider value={{ openId, close, open, anchor, setAnchor }}>
       {children}
     </MenusContext.Provider>
   );
 }
 
 function Toggle({ id }) {
-  const { open: openList, setAnchor, id: curId } = useContext(MenusContext);
+  const { open: openList, setAnchor, openId, close } = useContext(MenusContext);
 
-  if (id === curId)
+  function handleClick() {
+    // openList((curStateId) => (curStateId === id ? null : id));
+    console.log(id, openId);
+    openId === "" || openId !== id ? openList(id) : close();
+  }
+
+  if (id === openId)
     return (
-      <StyledToggle ref={setAnchor} onClick={() => openList(id)}>
+      <StyledToggle ref={setAnchor} onClick={handleClick}>
         <HiEllipsisVertical />
       </StyledToggle>
     );
   else
     return (
-      <StyledToggle onClick={() => openList(id)}>
+      <StyledToggle onClick={handleClick}>
         <HiEllipsisVertical />
       </StyledToggle>
     );
 }
 
 function List({ children, id }) {
-  const { id: curId, anchor, close } = useContext(MenusContext);
-  const ref = useOutsideClick(close);
+  const { openId, anchor, close } = useContext(MenusContext);
 
   const offsetOptions = {
     mainAxis: 5,
@@ -122,34 +126,42 @@ function List({ children, id }) {
     placement: "bottom-start",
     middleware: [offset(offsetOptions), flip(), shift()], // flip makes that go around when no space exist
   });
-  const refMerged = useMergeRefs([refs.setFloating, ref]);
-  if (id !== curId) return;
+
+  if (id !== openId) return null;
 
   return createPortal(
-    <StyledList ref={refMerged} style={floatingStyles}>
+    <StyledList ref={refs.setFloating} style={floatingStyles}>
       {children}
     </StyledList>,
     document.body
   );
 }
 
-function Button({ icon, children, onClick, disabled }) {
+function Button({ icon, children, onClick }) {
   const { close } = useContext(MenusContext);
 
   function handleClick() {
-    onClick();
+    onClick?.();
     close();
   }
 
   return (
-    <StyledButton onClick={handleClick} disabled={disabled}>
-      {icon}
-      <span>{children}</span>
-    </StyledButton>
+    <li>
+      <StyledButton onClick={handleClick}>
+        {icon}
+        <span>{children}</span>
+      </StyledButton>
+    </li>
   );
 }
 
-Menus.Menu = StyledMenu;
+function Menu({ children }) {
+  const ref = useOutsideClick(close);
+
+  return <StyledMenu ref={ref}>{children}</StyledMenu>;
+}
+
+Menus.Menu = Menu;
 Menus.Toggle = Toggle;
 Menus.List = List;
 Menus.Button = Button;
