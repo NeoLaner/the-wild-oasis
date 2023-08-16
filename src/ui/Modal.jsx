@@ -88,6 +88,7 @@ function Window({ children, name: windowName }) {
   const { showWindow: currentWindowName, close } = useContext(ModalContext);
   const ref = useRef();
   if (windowName !== currentWindowName) return;
+  console.log(1);
 
   return createPortal(
     <Overlay onClick={(e) => close(e, ref)} ref={ref}>

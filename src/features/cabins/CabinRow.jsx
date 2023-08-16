@@ -1,5 +1,11 @@
 import { useDeleteCabin } from "./useDeleteCabin";
-import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import {
+  HiEllipsisHorizontal,
+  HiEllipsisVertical,
+  HiPencil,
+  HiSquare2Stack,
+  HiTrash,
+} from "react-icons/hi2";
 
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
@@ -8,7 +14,8 @@ import Modal from "../../ui/Modal";
 import CreateUpdateCabinForm from "./CreateUpdateCabinForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
+
+import { Menu, MenuComponent, MenuItem } from "../../ui/DropdownMenu";
 
 const Img = styled.img`
   display: block;
@@ -35,6 +42,11 @@ const Discount = styled.div`
   font-family: "Sono";
   font-weight: 500;
   color: var(--color-green-700);
+`;
+
+const MenuBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 function CabinRow({ cabin }) {
@@ -66,8 +78,8 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
 
-      <div>
-        <Menus.Menu>
+      <MenuBox>
+        {/* <Menus.Menu>
           <Menus.Toggle id={cabin.id} />
           <Menus.List id={cabin.id}>
             <Menus.Button
@@ -99,8 +111,38 @@ function CabinRow({ cabin }) {
               </Modal.Window>
             </Modal>
           </Menus.List>
-        </Menus.Menu>
-      </div>
+        </Menus.Menu> */}
+
+        <Menu label={<HiEllipsisVertical />}>
+          <MenuItem
+            onClick={handleDuplicate}
+            disabled={isCreating}
+            label="Duplicate"
+            icon={<HiSquare2Stack />}
+          />
+
+          <Modal>
+            <Modal.Open open="edit-form">
+              <MenuItem label="Edit" icon={<HiPencil />} />
+            </Modal.Open>
+            <Modal.Window name="edit-form">
+              <CreateUpdateCabinForm cabin={cabin} />
+            </Modal.Window>
+          </Modal>
+
+          <Modal>
+            <Modal.Open open="delete-confirm">
+              <MenuItem label="Delete" icon={<HiTrash />} />
+            </Modal.Open>
+            <Modal.Window name="delete-confirm">
+              <ConfirmDelete
+                onConfirm={() => mutate(id)}
+                disabled={isDeleting}
+              />
+            </Modal.Window>
+          </Modal>
+        </Menu>
+      </MenuBox>
     </Table.Row>
   );
 }
