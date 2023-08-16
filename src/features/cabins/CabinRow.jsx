@@ -16,6 +16,9 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 
 import { Menu, MenuComponent, MenuItem } from "../../ui/DropdownMenu";
+import { useFloating } from "@floating-ui/react-dom";
+import { useState } from "react";
+import Menus from "../../ui/Menus";
 
 const Img = styled.img`
   display: block;
@@ -65,6 +68,7 @@ function CabinRow({ cabin }) {
       description,
     });
   }
+  const [anchor, setAnchor] = useState(null);
 
   return (
     <Table.Row role="row">
@@ -78,71 +82,39 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
 
-      <MenuBox>
-        {/* <Menus.Menu>
-          <Menus.Toggle id={cabin.id} />
-          <Menus.List id={cabin.id}>
-            <Menus.Button
-              onClick={handleDuplicate}
-              disabled={isCreating}
-              icon={<HiSquare2Stack />}
-            >
-              duplicate
-            </Menus.Button>
+      <div>
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={cabin.id} />
 
-            <Modal>
+            <Menus.List id={cabin.id}>
+              <Menus.Button
+                onClick={handleDuplicate}
+                disabled={isCreating}
+                icon={<HiSquare2Stack />}
+              >
+                duplicate
+              </Menus.Button>
+
               <Modal.Open open="edit-form">
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
-              <Modal.Window name="edit-form">
-                <CreateUpdateCabinForm cabin={cabin} />
-              </Modal.Window>
-            </Modal>
 
-            <Modal>
               <Modal.Open open="delete-confirm">
                 <Menus.Button icon={<HiTrash />}>delete</Menus.Button>
               </Modal.Open>
-              <Modal.Window name="delete-confirm">
-                <ConfirmDelete
-                  onConfirm={() => mutate(id)}
-                  disabled={isDeleting}
-                />
-              </Modal.Window>
-            </Modal>
-          </Menus.List>
-        </Menus.Menu> */}
+            </Menus.List>
+          </Menus.Menu>
 
-        <Menu label={<HiEllipsisVertical />}>
-          <MenuItem
-            onClick={handleDuplicate}
-            disabled={isCreating}
-            label="Duplicate"
-            icon={<HiSquare2Stack />}
-          />
+          <Modal.Window name="edit-form">
+            <CreateUpdateCabinForm cabin={cabin} />
+          </Modal.Window>
 
-          <Modal>
-            <Modal.Open open="edit-form">
-              <MenuItem label="Edit" icon={<HiPencil />} />
-            </Modal.Open>
-            <Modal.Window name="edit-form">
-              <CreateUpdateCabinForm cabin={cabin} />
-            </Modal.Window>
-          </Modal>
-
-          <Modal>
-            <Modal.Open open="delete-confirm">
-              <MenuItem label="Delete" icon={<HiTrash />} />
-            </Modal.Open>
-            <Modal.Window name="delete-confirm">
-              <ConfirmDelete
-                onConfirm={() => mutate(id)}
-                disabled={isDeleting}
-              />
-            </Modal.Window>
-          </Modal>
-        </Menu>
-      </MenuBox>
+          <Modal.Window name="delete-confirm">
+            <ConfirmDelete onConfirm={() => mutate(id)} disabled={isDeleting} />
+          </Modal.Window>
+        </Modal>
+      </div>
     </Table.Row>
   );
 }
