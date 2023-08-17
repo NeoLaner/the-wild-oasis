@@ -90,10 +90,10 @@ function Menus({ children }) {
 
 function Toggle({ id }) {
   const { open: openList, setAnchor, openId, close } = useContext(MenusContext);
-
+  // console.log(openId);
   function handleClick() {
     // openList((curStateId) => (curStateId === id ? null : id));
-    console.log(id, openId);
+
     openId === "" || openId !== id ? openList(id) : close();
   }
 
@@ -113,6 +113,7 @@ function Toggle({ id }) {
 
 function List({ children, id }) {
   const { openId, anchor, close } = useContext(MenusContext);
+  const ref = useOutsideClick(close);
 
   const offsetOptions = {
     mainAxis: 5,
@@ -130,9 +131,11 @@ function List({ children, id }) {
   if (id !== openId) return null;
 
   return createPortal(
-    <StyledList ref={refs.setFloating} style={floatingStyles}>
-      {children}
-    </StyledList>,
+    <div ref={ref}>
+      <StyledList ref={refs.setFloating} style={floatingStyles}>
+        {children}
+      </StyledList>
+    </div>,
     document.body
   );
 }
@@ -156,9 +159,7 @@ function Button({ icon, children, onClick }) {
 }
 
 function Menu({ children }) {
-  const ref = useOutsideClick(close);
-
-  return <StyledMenu ref={ref}>{children}</StyledMenu>;
+  return <StyledMenu>{children}</StyledMenu>;
 }
 
 Menus.Menu = Menu;

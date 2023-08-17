@@ -55,8 +55,15 @@ export async function createUpdateCabin(newCabin, id) {
   return data;
 }
 
-export async function deleteCabin(id) {
-  const { error } = await supabase.from("cabins").delete().eq("id", id);
+export async function deleteCabin(id, imagePath) {
+  const { data, error } = await supabase.from("cabins").delete().eq("id", id);
+
+  /*
+  const imageName = imagePath.split("/").at(-1);
+  await supabase.storage.from("cabin-images").remove([imageName]);
+  */
 
   if (error) throw new Error("Failed to delete cabin");
+
+  return data;
 }

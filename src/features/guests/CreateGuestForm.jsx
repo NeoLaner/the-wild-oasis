@@ -104,7 +104,7 @@ function CreateGuestForm({ onSuccessNewGuest, closeModal }) {
 
       <FormRow>
         <Button
-          variation='secondary'
+          $variation='secondary'
           type='reset'
           disabled={isCreating}
           onClick={() => closeModal?.()}

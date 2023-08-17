@@ -1,6 +1,5 @@
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
-import { useState } from "react";
 
 import { useDeleteCabin } from "./useDeleteCabin";
 import { formatCurrency } from "../../utils/helpers";
@@ -59,7 +58,6 @@ function CabinRow({ cabin }) {
       description,
     });
   }
-  const [anchor, setAnchor] = useState(null);
 
   return (
     <Table.Row>
@@ -98,7 +96,10 @@ function CabinRow({ cabin }) {
           </Modal.Window>
 
           <Modal.Window name="delete-confirm">
-            <ConfirmDelete onConfirm={() => mutate(id)} disabled={isDeleting} />
+            <ConfirmDelete
+              onConfirm={() => mutate({ id, image })}
+              disabled={isDeleting}
+            />
           </Modal.Window>
         </Modal>
       </div>
