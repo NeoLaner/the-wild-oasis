@@ -9,8 +9,9 @@ function CabinTable() {
   const { cabins, isLoading, error } = useCabins();
   const [searchParams] = useSearchParams();
   const currentFilter = searchParams.get("discount");
-  let filteredData;
 
+  let filteredData;
+  //1) Filter
   switch (currentFilter) {
     case "with-discount":
       filteredData = cabins?.filter((cabin) => cabin.discount !== 0);
@@ -22,6 +23,18 @@ function CabinTable() {
       filteredData = cabins;
       break;
   }
+
+  //2) Sort
+  const currentSort = searchParams.get("sort") || "";
+  const [field, direction] = currentSort.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+
+  if (field === "created_at")
+    filteredData?.sort(
+      (a, b) =>
+        (new Date(a["created_at"]) - new Date(b["created_at"])) * modifier
+    );
+  else filteredData?.sort((a, b) => (a[field] - b[field]) * modifier);
 
   return (
     <Menus>
