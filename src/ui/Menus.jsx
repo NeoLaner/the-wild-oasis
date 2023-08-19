@@ -125,7 +125,7 @@ function List({ children, id }) {
     elements: { reference: anchor },
     whileElementsMounted: autoUpdate,
     placement: "bottom-start",
-    middleware: [offset(offsetOptions), flip(), shift()], // flip makes that go around when no space exist
+    middleware: [offset(offsetOptions), flip(), shift({ crossAxis: true })], // flip makes that go around when no space exist
   });
 
   if (id !== openId) return null;
