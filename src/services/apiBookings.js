@@ -1,13 +1,34 @@
+import { RESULT_PER_PAGE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBookings() {
-  const { data, error } = await supabase
+export async function getBookings(filter, sortBy, curPage) {
+  const query = supabase
     .from("bookings")
-    .select("*,cabins(name) , guests(fullName , email)");
+    .select("*,cabins(name) , guests(fullName , email)", { count: "exact" });
+
+  //1) Filter
+  if (filter) query.eq(filter.field, filter.value);
+
+  //2) Sort
+  if (sortBy)
+    query.order(sortBy.field, {
+      ascending: sortBy.value === "asc",
+    });
+
+  //3) Pagination
+  console.log(curPage);
+  if (curPage) {
+    const from = (curPage - 1) * RESULT_PER_PAGE;
+    const to = from + RESULT_PER_PAGE;
+    query.range(from, to);
+  }
+
+  const { data, count, error } = await query;
+
   if (error) throw new Error("Failed to get cabins");
 
-  return data;
+  return { data, count };
 }
 
 export async function getBooking(id) {
