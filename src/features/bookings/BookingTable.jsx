@@ -1,12 +1,12 @@
 import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
-import { useBooking } from "./useBooking";
+import { useBookings } from "./useBookings";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
-  const { bookings, isLoading, count, error } = useBooking();
+  const { bookings, isLoading, count, error } = useBookings();
 
   if (isLoading) return <Spinner />;
 
