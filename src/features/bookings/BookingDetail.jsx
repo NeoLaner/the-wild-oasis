@@ -12,8 +12,12 @@ import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "./useBooking";
 import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router-dom";
-import { HiArrowUpOnSquare } from "react-icons/hi2";
+import { HiArrowUpOnSquare, HiTrash } from "react-icons/hi2";
 import { useCheckout } from "../check-in-out/useCheckout";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import useDeletingBooking from "./useDeletingBooking";
+import Empty from "../../ui/Empty";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -27,6 +31,7 @@ function BookingDetail() {
   const navigate = useNavigate();
   const moveBack = useMoveBack();
   const { mutate: checkout, isLoading: checkoutLoading } = useCheckout();
+  const { mutate: deleteBooking, isLoading: isDeleting } = useDeletingBooking();
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -34,13 +39,13 @@ function BookingDetail() {
   };
 
   if (isLoading) return <Spinner />;
-
+  if (!booking) return <Empty resource="booking" />;
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Booking #{id}</Heading>
-          <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+          <Tag type={statusToTagName[status]}>{status?.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
@@ -64,6 +69,20 @@ function BookingDetail() {
             Check out
           </Button>
         )}
+
+        <Modal>
+          <Modal.Open open="delete-confirm">
+            <Button icon={<HiTrash />} $variation="danger">
+              delete
+            </Button>
+          </Modal.Open>
+          <Modal.Window name="delete-confirm">
+            <ConfirmDelete
+              onConfirm={() => deleteBooking(id)}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
       </ButtonGroup>
     </>
   );
