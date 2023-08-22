@@ -49,9 +49,14 @@ function BookingDetail() {
         <Button $variation="secondary" onClick={moveBack}>
           Back
         </Button>
-        <Button $variation="primary" onClick={() => navigate(`/checkin/${id}`)}>
-          Check in
-        </Button>
+        {status === "unconfirmed" && (
+          <Button
+            $variation="primary"
+            onClick={() => navigate(`/checkin/${id}`)}
+          >
+            Check in
+          </Button>
+        )}
       </ButtonGroup>
     </>
   );
