@@ -17,7 +17,7 @@ export async function getBookings(filter, sortBy, curPage) {
     });
 
   //3) Pagination
-  console.log(curPage);
+
   if (curPage) {
     const from = (curPage - 1) * RESULT_PER_PAGE;
     const to = from + RESULT_PER_PAGE;

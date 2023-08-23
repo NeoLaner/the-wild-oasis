@@ -31,7 +31,7 @@ export function useBookings() {
 
   //4) Prefetching
   const totalPages = Math.ceil(count / RESULT_PER_PAGE);
-  console.log(curPage, totalPages);
+
   if (curPage < totalPages)
     queryClient.prefetchQuery({
       queryKey: ["bookings", filter, sortBy, curPage + 1],
