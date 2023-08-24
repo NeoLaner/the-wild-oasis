@@ -3,12 +3,12 @@ import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
-import { useAuth } from "./useAuth";
+import { useLogin } from "./useLogin.js";
 
 function LoginForm() {
   const [email, setEmail] = useState("neo.laner@test.com");
   const [password, setPassword] = useState("123456789");
-  const { login, isLoading } = useAuth();
+  const { login, isLoading } = useLogin();
   function handleSubmit(e) {
     e.preventDefault();
     login({ email, password });
