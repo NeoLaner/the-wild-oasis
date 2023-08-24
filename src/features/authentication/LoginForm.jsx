@@ -4,14 +4,24 @@ import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useLogin } from "./useLogin.js";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function LoginForm() {
   const [email, setEmail] = useState("neo.laner@test.com");
   const [password, setPassword] = useState("123456789");
   const { login, isLoading } = useLogin();
+
   function handleSubmit(e) {
     e.preventDefault();
-    login({ email, password });
+    login(
+      { email, password },
+      {
+        onError: () => {
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
   }
 
   return (
@@ -39,7 +49,7 @@ function LoginForm() {
       </FormRowVertical>
       <FormRowVertical>
         <Button size="large" disabled={isLoading}>
-          Login
+          {isLoading ? <SpinnerMini /> : "Login"}
         </Button>
       </FormRowVertical>
     </Form>
