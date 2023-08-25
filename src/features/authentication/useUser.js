@@ -9,5 +9,9 @@ export function useUser() {
     retry: false,
   });
 
-  return { isAuthenticated: data?.user.role === "authenticated", isLoading };
+  return {
+    user: data?.user,
+    isAuthenticated: data?.user.role === "authenticated",
+    isLoading,
+  };
 }

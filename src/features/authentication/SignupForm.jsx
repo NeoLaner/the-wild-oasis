@@ -12,8 +12,8 @@ function SignupForm() {
   const { errors } = formState;
   const { signup, isLoading } = useSignup();
 
-  function onSubmit({ email, password, firstName }) {
-    signup({ email, password, firstName }, { onSettled: () => reset() });
+  function onSubmit({ email, password, fullName }) {
+    signup({ email, password, fullName }, { onSettled: () => reset() });
   }
 
   return (
