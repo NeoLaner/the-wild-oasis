@@ -54,7 +54,7 @@ function SignupForm() {
             required: "This field is required",
             minLength: {
               value: 8,
-              message: "The password must have at lease 8 characters",
+              message: "The password must have at least 8 characters",
             },
           })}
         />
