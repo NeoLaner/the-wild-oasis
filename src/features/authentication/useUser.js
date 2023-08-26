@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import supabase from "../../services/supabase";
 import { getUser } from "../../services/apiAuth";
 
 export function useUser() {
