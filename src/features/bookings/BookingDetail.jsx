@@ -39,7 +39,9 @@ function BookingDetail() {
   };
 
   if (isLoading) return <Spinner />;
+
   if (!booking) return <Empty resource="booking" />;
+
   return (
     <>
       <Row type="horizontal">

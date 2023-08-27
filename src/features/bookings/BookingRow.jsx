@@ -62,7 +62,7 @@ function BookingRow({
   },
 }) {
   const navigate = useNavigate();
-  const { mutate: checkout, isLoading } = useCheckout();
+  const { mutate: checkout } = useCheckout();
   const { mutate: deleteBooking, isLoading: isDeleting } = useDeletingBooking();
   const statusToTagName = {
     unconfirmed: "blue",
