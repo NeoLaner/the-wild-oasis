@@ -10,7 +10,7 @@ export function useUpdateSetting() {
       toast.success("Setting is successfully updated");
       queryClient.invalidateQueries({ queryKey: ["settings"] });
     },
-    onError: (err) => toast.error(err),
+    onError: (err) => toast.error(err.message),
   });
 
   return { updateSetting, isUpdating };
