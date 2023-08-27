@@ -18,16 +18,17 @@ function UpdateSettingsForm() {
     isLoading,
   } = useSettings();
 
-  const { mutate: updateSetting, isLoading: isUpdating } = useUpdateSetting();
+  const { updateSetting, isUpdating } = useUpdateSetting();
 
   // return <Spinner />;
   if (isLoading) return <Spinner />;
 
   function handleBlur(e, field) {
     const { value } = e.target;
+    const newSetting = { [field]: value };
 
     if (!value) return;
-    updateSetting({ [field]: value });
+    updateSetting(newSetting);
   }
 
   // This time we are using UNCONTROLLED fields, so we will NOT store state
