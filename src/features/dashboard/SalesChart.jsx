@@ -90,9 +90,8 @@ function SalesChart({ bookings, numDays }) {
   return (
     <StyledSalesChart>
       <Heading as="h2">
-        Sales
-        {/* from {format(allDate.at(0), "MMM dd yyyy")} &mdash;{" "}
-        {format(allDates.at(-1), "MMM dd yyyy")}{" "} */}
+        Sales from {format(daysInterval.at(0), "MMM dd yyyy")} &mdash;{" "}
+        {format(daysInterval.at(-1), "MMM dd yyyy")}{" "}
       </Heading>
 
       <ResponsiveContainer height={300} width="100%">
