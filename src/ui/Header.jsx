@@ -15,9 +15,17 @@ const StyledHeader = styled.header`
   gap: 1rem;
 `;
 
+const Warning = styled.div`
+  margin-right: auto;
+`;
+
 function Header() {
   return (
     <StyledHeader>
+      <Warning>
+        ⚠ Data mutations (create, update, delete) are deactivated in this demo
+        app.
+      </Warning>
       <UserAvatar />
       <HeaderMenu />
     </StyledHeader>
