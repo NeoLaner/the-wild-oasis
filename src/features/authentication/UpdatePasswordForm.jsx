@@ -17,16 +17,16 @@ function UpdatePasswordForm() {
   const { updateUser, isUpdating } = useUpdateUser();
 
   function onSubmit({ password }) {
-    updateUser(
-      { password },
-      {
-        onSuccess: () => {
-          supabase.auth.signOut();
-          queryClient.removeQueries();
-          navigate("/login");
-        },
-      }
-    );
+    // updateUser(
+    //   { password },
+    //   {
+    //     onSuccess: () => {
+    //       supabase.auth.signOut();
+    //       queryClient.removeQueries();
+    //       navigate("/login");
+    //     },
+    //   }
+    // );
   }
 
   return (
